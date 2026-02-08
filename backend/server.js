@@ -215,6 +215,16 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+// Debug endpoint to check environment
+app.get('/debug', (req, res) => {
+  res.json({
+    hasDatabaseUrl: !!process.env.DATABASE_URL,
+    databaseUrlPrefix: process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 15) + '...' : 'not set',
+    nodeEnv: process.env.NODE_ENV,
+    port: process.env.PORT
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);
   console.log('Using SQLite database for job storage');
