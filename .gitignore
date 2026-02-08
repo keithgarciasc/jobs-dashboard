@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Database
+backend/jobs.db
+backend/*.db
+
+# Build outputs
+frontend/dist/
+frontend/build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local
+
+# Editor directories
+.vscode/
+.idea/
+.vs/
+*.swp
+*.swo
+
+# Claude Code session data
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
