@@ -197,7 +197,7 @@ body::before {
 
 .page-header {
   text-align: center;
-  margin: 0 30px 40px 30px;
+  margin: 0 80px 40px 80px;
   padding: 40px 20px;
   background: linear-gradient(135deg, rgba(139, 90, 43, 0.6) 0%, rgba(101, 67, 33, 0.6) 100%);
   border-radius: 15px;
@@ -301,7 +301,7 @@ body::before {
   background: linear-gradient(135deg, #f4e4c1 0%, #e8d4a8 100%);
   border-radius: 12px;
   padding: 30px;
-  margin: 0 30px;
+  margin: 0 80px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
   border: 4px solid #654321;
   position: relative;
@@ -619,9 +619,12 @@ body::before {
 /* Actions - Call to Action Buttons */
 .job-actions {
   display: flex;
-  align-items: center;
-  gap: 15px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
   margin-left: 25px;
+  min-width: 180px;
+  flex-shrink: 0;
 }
 
 .job-post-link {
