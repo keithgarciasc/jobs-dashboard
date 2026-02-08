@@ -12,6 +12,7 @@ body {
   background-attachment: fixed;
   color: #3d2817;
   position: relative;
+  overflow-x: hidden;
 }
 
 body::before {
@@ -191,8 +192,9 @@ body::before {
 .page-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 20px 50px !important;
+  padding: 20px;
   flex: 1;
+  overflow-x: hidden;
 }
 
 .page-header {
@@ -799,7 +801,11 @@ body::before {
   }
 
   .nav-logo {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 60%;
   }
 
   .nav-menu {
@@ -854,7 +860,9 @@ body::before {
   /* Page Header */
   .page-header {
     padding: 25px 15px;
-    margin-bottom: 25px;
+    margin: 0 10px 25px 10px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
   }
 
   .page-header::before,
@@ -886,6 +894,8 @@ body::before {
     margin-top: 15px;
     padding: 15px;
     font-size: 1.1rem;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
   }
 
   .stats {
@@ -901,6 +911,7 @@ body::before {
   /* Job Section */
   .job-section {
     padding: 20px;
+    margin: 0;
     border-width: 3px;
   }
 
@@ -1065,8 +1076,23 @@ body::before {
 
 /* Extra small devices (phones in portrait, less than 576px) */
 @media (max-width: 576px) {
+  .nav-logo {
+    font-size: 1.1rem;
+    max-width: 55%;
+  }
+
+  .page-container {
+    padding: 10px;
+  }
+
+  .page-header {
+    margin: 0 5px 20px 5px;
+    padding: 20px 12px;
+  }
+
   .page-header h1 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
   }
 
   .subtitle {
@@ -1078,12 +1104,28 @@ body::before {
     padding: 12px;
   }
 
+  .stats {
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+
+  .job-section {
+    padding: 15px 12px;
+    margin: 0;
+  }
+
   .section-title {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+  }
+
+  .job-row {
+    padding: 15px 10px;
+    padding-top: 30px;
   }
 
   .job-title {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
   .job-company {
