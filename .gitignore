@@ -38,6 +38,7 @@ scripts/
 *.bat
 DEPLOYMENT.md
 SECURITY_AUDIT.md
+POSTGRES_GUIDE.md
 
 # Keep only main README
 !README.md
