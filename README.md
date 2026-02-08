@@ -479,7 +479,7 @@ This project is open source and available under the [MIT License](LICENSE).
 - **Components:** 7 React components
 - **API Endpoints:** 6 RESTful routes
 - **Database Tables:** 2 with JSONB storage
-- **Scripts:** 4 automation tools
+- **Scripts:** 3 automation tools
 - **Documentation:** Comprehensive README, deployment guide, security audit
 
 ---
