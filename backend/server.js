@@ -39,11 +39,11 @@ app.use(express.json());
  * Frontier & remote trails: last 10 remote jobs
  * Quick draw and side hustles: last 5 side gig jobs
  */
-app.get('/api/jobs', (req, res) => {
+app.get('/api/jobs', async (req, res) => {
   try {
     // Get all recommended jobs
-    const recommendedJobs = getRecommendedJobs();
-    const appliedIds = new Set(getAppliedJobIds());
+    const recommendedJobs = await getRecommendedJobs();
+    const appliedIds = new Set(await getAppliedJobIds());
 
     // Convert to jobs with full data and applied status
     const allJobs = recommendedJobs.map(item => ({
@@ -81,7 +81,7 @@ app.get('/api/jobs', (req, res) => {
  * Mark a job as applied
  * Body: { jobId: string, jobData: object }
  */
-app.post('/api/apply', (req, res) => {
+app.post('/api/apply', async (req, res) => {
   try {
     const { jobId, jobData } = req.body;
 
@@ -89,7 +89,7 @@ app.post('/api/apply', (req, res) => {
       return res.status(400).json({ error: 'jobId and jobData are required' });
     }
 
-    const wasNew = markJobAsApplied(jobId, jobData);
+    const wasNew = await markJobAsApplied(jobId, jobData);
 
     res.json({
       success: true,
@@ -106,9 +106,9 @@ app.post('/api/apply', (req, res) => {
  * GET /api/applied
  * Get all applied jobs
  */
-app.get('/api/applied', (req, res) => {
+app.get('/api/applied', async (req, res) => {
   try {
-    const appliedJobs = getAppliedJobs();
+    const appliedJobs = await getAppliedJobs();
     res.json(appliedJobs);
   } catch (error) {
     console.error('Error fetching applied jobs:', error);
@@ -121,13 +121,13 @@ app.get('/api/applied', (req, res) => {
  * Get recommended jobs that are NOT in applied_jobs
  * Organized by section (local_charleston, remote_other, side_gigs)
  */
-app.get('/api/recommended', (req, res) => {
+app.get('/api/recommended', async (req, res) => {
   try {
     // Get all recommended jobs
-    const recommendedJobs = getRecommendedJobs();
+    const recommendedJobs = await getRecommendedJobs();
 
     // Get applied job IDs to exclude them
-    const appliedIds = new Set(getAppliedJobIds());
+    const appliedIds = new Set(await getAppliedJobIds());
 
     // Filter out applied jobs only
     const filteredJobs = recommendedJobs
