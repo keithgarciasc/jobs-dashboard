@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import JobSection from '../components/JobSection';
-import API_BASE_URL from '../config';
+import { authenticatedFetch } from '../config';
 
 function AppliedJobs() {
   const [appliedJobs, setAppliedJobs] = useState([]);
@@ -14,7 +14,7 @@ function AppliedJobs() {
   async function fetchAppliedJobs() {
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/api/applied`);
+      const response = await authenticatedFetch('/api/applied');
       if (!response.ok) {
         throw new Error('Failed to fetch applied jobs');
       }

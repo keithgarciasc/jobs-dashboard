@@ -39,6 +39,10 @@ scripts/
 DEPLOYMENT.md
 SECURITY_AUDIT.md
 POSTGRES_GUIDE.md
+AUTHENTICATION_SETUP.md
+
+# Database setup files (contain credentials/schema)
+backend/db-schema-update.sql
 
 # Keep only main README
 !README.md

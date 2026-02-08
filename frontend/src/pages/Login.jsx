@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../config';
 import '../styles/Login.css';
 
 function Login() {
@@ -18,25 +19,73 @@ function Login() {
 
   const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    // Simple authentication (you can enhance this later)
-    if (username && password) {
-      // Store auth token (simple version)
-      localStorage.setItem('jobWranglerAuth', 'authenticated');
-      localStorage.setItem('jobWranglerUser', username);
-      navigate('/');
-    } else {
+    if (!username || !password) {
       setError('Hold up there, partner! Fill in both fields!');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        setError(data.error || 'Invalid credentials, partner!');
+        return;
+      }
+
+      const data = await response.json();
+
+      // Store auth info
+      localStorage.setItem('jobWranglerAuth', 'authenticated');
+      localStorage.setItem('jobWranglerUserId', data.user.id);
+      localStorage.setItem('jobWranglerUser', data.user.displayName);
+      localStorage.setItem('jobWranglerIsGuest', data.user.isGuest);
+
+      navigate('/');
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('Connection error - check if backend is running!');
     }
   };
 
-  const handleGuestAccess = () => {
-    localStorage.setItem('jobWranglerAuth', 'guest');
-    localStorage.setItem('jobWranglerUser', 'Guest Cowpoke');
-    navigate('/');
+  const handleGuestAccess = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: 'guest', password: 'guest' }),
+      });
+
+      if (!response.ok) {
+        setError('Guest access unavailable!');
+        return;
+      }
+
+      const data = await response.json();
+
+      // Store auth info
+      localStorage.setItem('jobWranglerAuth', 'guest');
+      localStorage.setItem('jobWranglerUserId', data.user.id);
+      localStorage.setItem('jobWranglerUser', data.user.displayName);
+      localStorage.setItem('jobWranglerIsGuest', 'true');
+
+      navigate('/');
+    } catch (err) {
+      console.error('Guest login error:', err);
+      setError('Connection error - check if backend is running!');
+    }
   };
 
   return (

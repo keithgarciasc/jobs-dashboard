@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Dashboard from '../components/Dashboard';
-import API_BASE_URL from '../config';
+import { authenticatedFetch } from '../config';
 
 function Home() {
   const [jobs, setJobs] = useState({
@@ -18,7 +18,7 @@ function Home() {
   async function fetchJobs() {
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/api/jobs`);
+      const response = await authenticatedFetch('/api/jobs');
       if (!response.ok) {
         throw new Error('Failed to fetch jobs');
       }
@@ -35,11 +35,8 @@ function Home() {
 
   async function handleApply(jobId, jobData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/apply`, {
+      const response = await authenticatedFetch('/api/apply', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
         body: JSON.stringify({ jobId, jobData })
       });
 

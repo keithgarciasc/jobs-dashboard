@@ -1,7 +1,16 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { getAppliedJobIds, markJobAsApplied, getAppliedJobs, getRecommendedJobs, addRecommendedJob } from './db.js';
+import {
+  getAppliedJobIds,
+  markJobAsApplied,
+  getAppliedJobs,
+  getRecommendedJobs,
+  addRecommendedJob,
+  authenticateUser,
+  getUserById,
+  getLoginAnalytics
+} from './db.js';
 
 // Load environment variables
 dotenv.config();
@@ -30,7 +39,53 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Authentication Middleware
+function requireAuth(req, res, next) {
+  const userId = req.headers['x-user-id'];
+
+  if (!userId) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+
+  req.userId = parseInt(userId);
+  next();
+}
+
 // API Routes
+
+/**
+ * POST /api/auth/login
+ * Authenticate user
+ * Body: { username: string, password: string }
+ */
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required' });
+    }
+
+    const user = await authenticateUser(username, password);
+
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    res.json({
+      success: true,
+      user: {
+        id: user.id,
+        username: user.username,
+        displayName: user.display_name,
+        isGuest: user.is_guest
+      }
+    });
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
 
 /**
  * GET /api/jobs
@@ -39,11 +94,12 @@ app.use(express.json());
  * Frontier & remote trails: last 10 remote jobs
  * Quick draw and side hustles: last 5 side gig jobs
  */
-app.get('/api/jobs', async (req, res) => {
+app.get('/api/jobs', requireAuth, async (req, res) => {
   try {
-    // Get all recommended jobs
+    // Get all recommended jobs (shared by all users)
     const recommendedJobs = await getRecommendedJobs();
-    const appliedIds = new Set(await getAppliedJobIds());
+    // Get applied jobs for this specific user
+    const appliedIds = new Set(await getAppliedJobIds(req.userId));
 
     // Convert to jobs with full data and applied status
     const allJobs = recommendedJobs.map(item => ({
@@ -78,10 +134,10 @@ app.get('/api/jobs', async (req, res) => {
 
 /**
  * POST /api/apply
- * Mark a job as applied
+ * Mark a job as applied for the authenticated user
  * Body: { jobId: string, jobData: object }
  */
-app.post('/api/apply', async (req, res) => {
+app.post('/api/apply', requireAuth, async (req, res) => {
   try {
     const { jobId, jobData } = req.body;
 
@@ -89,7 +145,7 @@ app.post('/api/apply', async (req, res) => {
       return res.status(400).json({ error: 'jobId and jobData are required' });
     }
 
-    const wasNew = await markJobAsApplied(jobId, jobData);
+    const wasNew = await markJobAsApplied(jobId, jobData, req.userId);
 
     res.json({
       success: true,
@@ -104,11 +160,11 @@ app.post('/api/apply', async (req, res) => {
 
 /**
  * GET /api/applied
- * Get all applied jobs
+ * Get all applied jobs for the authenticated user
  */
-app.get('/api/applied', async (req, res) => {
+app.get('/api/applied', requireAuth, async (req, res) => {
   try {
-    const appliedJobs = await getAppliedJobs();
+    const appliedJobs = await getAppliedJobs(req.userId);
     res.json(appliedJobs);
   } catch (error) {
     console.error('Error fetching applied jobs:', error);
@@ -118,16 +174,16 @@ app.get('/api/applied', async (req, res) => {
 
 /**
  * GET /api/recommended
- * Get recommended jobs that are NOT in applied_jobs
+ * Get recommended jobs that are NOT in applied_jobs for the authenticated user
  * Organized by section (local_charleston, remote_other, side_gigs)
  */
-app.get('/api/recommended', async (req, res) => {
+app.get('/api/recommended', requireAuth, async (req, res) => {
   try {
-    // Get all recommended jobs
+    // Get all recommended jobs (shared by all users)
     const recommendedJobs = await getRecommendedJobs();
 
-    // Get applied job IDs to exclude them
-    const appliedIds = new Set(await getAppliedJobIds());
+    // Get applied job IDs for this user to exclude them
+    const appliedIds = new Set(await getAppliedJobIds(req.userId));
 
     // Filter out applied jobs only
     const filteredJobs = recommendedJobs
@@ -207,6 +263,26 @@ app.post('/api/admin/recommend', async (req, res) => {
   } catch (error) {
     console.error('Error adding recommended job:', error);
     res.status(500).json({ error: 'Failed to add job to recommended' });
+  }
+});
+
+/**
+ * GET /api/analytics
+ * Get login analytics (owner only)
+ */
+app.get('/api/analytics', requireAuth, async (req, res) => {
+  try {
+    // Check if user is owner
+    const user = await getUserById(req.userId);
+    if (!user || user.is_guest) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const analytics = await getLoginAnalytics();
+    res.json(analytics);
+  } catch (error) {
+    console.error('Error fetching analytics:', error);
+    res.status(500).json({ error: 'Failed to load analytics' });
   }
 });
 

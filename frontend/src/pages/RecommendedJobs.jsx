@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import JobSection from '../components/JobSection';
-import API_BASE_URL from '../config';
+import { authenticatedFetch } from '../config';
 
 const JOBS_PER_PAGE = 10;
 
@@ -28,7 +28,7 @@ function RecommendedJobs() {
   async function fetchRecommendedJobs() {
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/api/recommended`);
+      const response = await authenticatedFetch('/api/recommended');
       if (!response.ok) {
         throw new Error('Failed to fetch recommended jobs');
       }
@@ -45,11 +45,8 @@ function RecommendedJobs() {
 
   async function handleApply(jobId, jobData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/apply`, {
+      const response = await authenticatedFetch('/api/apply', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
         body: JSON.stringify({ jobId, jobData })
       });
 
