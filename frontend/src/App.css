@@ -116,6 +116,42 @@ body::before {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* Navigation User and Logout */
+.nav-divider {
+  height: 2px;
+  background: linear-gradient(to right, transparent, #d4a574, transparent);
+  margin: 10px 20px;
+}
+
+.nav-user {
+  pointer-events: none;
+}
+
+.nav-username {
+  color: #ffd700;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  display: block;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.logout-btn {
+  background: none;
+  border: 2px solid transparent;
+  color: #f4e4c1;
+  cursor: pointer;
+  font-family: 'Yanone Kaffeesatz', 'Arial Black', sans-serif;
+  text-align: center;
+  width: 100%;
+}
+
+.logout-btn:hover {
+  background-color: rgba(212, 165, 116, 0.3);
+  border-color: #d4a574;
+  color: #ffd700;
+}
+
 /* Hamburger Menu */
 .hamburger {
   display: none;
@@ -788,6 +824,15 @@ body::before {
 
   .nav-link:hover {
     background-color: rgba(212, 165, 116, 0.3);
+  }
+
+  .nav-divider {
+    margin: 15px 0;
+  }
+
+  .nav-username {
+    padding: 15px 0;
+    font-size: 1.1rem;
   }
 
   /* Page Container */

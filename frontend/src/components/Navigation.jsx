@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -13,9 +14,18 @@ function Navigation() {
     setIsMenuOpen(false);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('jobWranglerAuth');
+    localStorage.removeItem('jobWranglerUser');
+    navigate('/login');
+    closeMenu();
+  };
+
   const isActive = (path) => {
     return location.pathname === path;
   };
+
+  const username = localStorage.getItem('jobWranglerUser') || 'Cowpoke';
 
   return (
     <nav className="navbar">
@@ -57,6 +67,15 @@ function Navigation() {
             >
               Wanted Board
             </Link>
+          </li>
+          <li className="nav-item nav-divider"></li>
+          <li className="nav-item nav-user">
+            <span className="nav-username">🤠 {username}</span>
+          </li>
+          <li className="nav-item">
+            <button onClick={handleLogout} className="nav-link logout-btn">
+              Ride Off 🌅
+            </button>
           </li>
         </ul>
       </div>
