@@ -27,5 +27,8 @@ export const {
   getRecommendedJobIds,
   getRecommendedJobs,
   addRecommendedJob,
+  authenticateUser,
+  getUserById,
+  getLoginAnalytics,
   default: db
 } = dbModule;
