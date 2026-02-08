@@ -6,9 +6,11 @@ dotenv.config();
 const { Pool } = pg;
 
 // Create PostgreSQL connection pool
+// Only use SSL for remote databases (not localhost)
+const isLocalDb = process.env.DATABASE_URL?.includes('localhost');
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL ? {
+  ssl: (process.env.DATABASE_URL && !isLocalDb) ? {
     rejectUnauthorized: false
   } : false
 });
