@@ -191,13 +191,13 @@ body::before {
 .page-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 20px 50px !important;
   flex: 1;
 }
 
 .page-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin: 0 30px 40px 30px;
   padding: 40px 20px;
   background: linear-gradient(135deg, rgba(139, 90, 43, 0.6) 0%, rgba(101, 67, 33, 0.6) 100%);
   border-radius: 15px;
@@ -301,6 +301,7 @@ body::before {
   background: linear-gradient(135deg, #f4e4c1 0%, #e8d4a8 100%);
   border-radius: 12px;
   padding: 30px;
+  margin: 0 30px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
   border: 4px solid #654321;
   position: relative;
@@ -896,7 +897,7 @@ body::before {
 
   /* Job Section */
   .job-section {
-    padding: 20px 15px;
+    padding: 20px;
     border-width: 3px;
   }
 
