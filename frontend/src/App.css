@@ -741,14 +741,24 @@ body::before {
 
 /* Responsive */
 @media (max-width: 768px) {
+  /* Navigation */
   .hamburger {
     display: flex;
+  }
+
+  .nav-container {
+    padding: 0 15px;
+    height: 70px;
+  }
+
+  .nav-logo {
+    font-size: 1.5rem;
   }
 
   .nav-menu {
     position: fixed;
     left: -100%;
-    top: 80px;
+    top: 70px;
     flex-direction: column;
     background: linear-gradient(135deg, #8b5a2b 0%, #654321 100%);
     width: 100%;
@@ -773,54 +783,258 @@ body::before {
     width: 100%;
     padding: 20px 0;
     margin: 0;
+    font-size: 1.2rem;
   }
 
   .nav-link:hover {
     background-color: rgba(212, 165, 116, 0.3);
   }
 
+  /* Page Container */
+  .page-container {
+    padding: 15px;
+  }
+
+  /* Page Header */
+  .page-header {
+    padding: 25px 15px;
+    margin-bottom: 25px;
+  }
+
+  .page-header::before,
+  .page-header::after {
+    font-size: 1.5rem;
+    top: 8px;
+  }
+
+  .page-header::before {
+    left: 10px;
+  }
+
+  .page-header::after {
+    right: 10px;
+  }
+
   .page-header h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
   }
 
   .subtitle {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
   }
 
+  .motivational-quote {
+    margin-top: 15px;
+    padding: 15px;
+    font-size: 1.1rem;
+  }
+
+  .stats {
+    font-size: 1.1rem;
+    padding: 12px 20px;
+  }
+
+  /* Dashboard */
+  .dashboard {
+    gap: 25px;
+  }
+
+  /* Job Section */
+  .job-section {
+    padding: 20px 15px;
+    border-width: 3px;
+  }
+
+  .job-section::before {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+    gap: 8px;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+
+  .section-title::before {
+    font-size: 1.5rem;
+  }
+
+  .job-count {
+    font-size: 1.1rem;
+    padding: 4px 12px;
+  }
+
+  .jobs-list {
+    gap: 18px;
+  }
+
+  .no-jobs {
+    padding: 35px 15px;
+    font-size: 1.1rem;
+  }
+
+  /* Job Row */
   .job-row {
     flex-direction: column;
     align-items: stretch;
-    gap: 20px;
+    gap: 15px;
+    padding: 20px 15px;
     padding-top: 35px;
+    border-width: 2px;
   }
 
+  .job-row::before {
+    top: -12px;
+    left: 15px;
+    font-size: 1.5rem;
+  }
+
+  /* Job Info */
+  .job-info {
+    gap: 10px;
+  }
+
+  .job-main {
+    gap: 6px;
+  }
+
+  .job-title {
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+  }
+
+  .job-company {
+    font-size: 1.2rem;
+  }
+
+  .job-details {
+    gap: 12px;
+    font-size: 1rem;
+  }
+
+  .job-location::before,
+  .job-pay::before {
+    font-size: 1.1rem;
+  }
+
+  .job-pay {
+    font-size: 1.1rem;
+  }
+
+  .job-applied-date {
+    padding: 5px 12px;
+    font-size: 0.95rem;
+  }
+
+  /* Scores */
+  .job-scores {
+    gap: 10px;
+    margin-top: 6px;
+  }
+
+  .confidence-badge,
+  .score {
+    font-size: 0.95rem;
+    padding: 5px 12px;
+  }
+
+  /* Reasoning */
+  .toggle-details-btn {
+    padding: 8px 14px;
+    font-size: 0.95rem;
+  }
+
+  .reasoning-details {
+    margin-top: 12px;
+    padding: 15px;
+  }
+
+  .reasoning-item p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* Actions */
   .job-actions {
     margin-left: 0;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
+    width: 100%;
   }
 
   .job-post-link,
   .apply-btn {
     width: 100%;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    min-width: unset;
   }
 
-  .section-title {
-    font-size: 1.8rem;
-  }
-
+  /* Pagination */
   .pagination-controls {
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
+    padding: 15px;
+    margin-top: -5px;
   }
 
   .pagination-btn {
     width: 100%;
-    padding: 14px;
+    padding: 12px 20px;
+    font-size: 1rem;
   }
 
   .pagination-info {
     width: 100%;
     text-align: center;
+    font-size: 1rem;
+    padding: 8px 15px;
+  }
+
+  /* Loading & Error */
+  .loading,
+  .error {
+    padding: 40px 15px;
+    font-size: 1.3rem;
+  }
+}
+
+/* Extra small devices (phones in portrait, less than 576px) */
+@media (max-width: 576px) {
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .motivational-quote {
+    font-size: 1rem;
+    padding: 12px;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+  }
+
+  .job-title {
+    font-size: 1.3rem;
+  }
+
+  .job-company {
+    font-size: 1.1rem;
+  }
+
+  .job-details {
+    font-size: 0.95rem;
   }
 }
