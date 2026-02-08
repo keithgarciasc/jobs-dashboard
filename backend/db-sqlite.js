@@ -184,6 +184,40 @@ export function getRecommendedJobs() {
   return jobs;
 }
 
+/**
+ * Add a job to recommended jobs (for testing/admin)
+ * @param {string} jobId - Unique identifier for the job (URL)
+ * @param {object} jobData - Full job payload
+ */
+export function addRecommendedJob(jobId, jobData) {
+  if (!db) {
+    console.error('Database not initialized');
+    return false;
+  }
+
+  // Check if job already exists
+  const checkStmt = db.prepare('SELECT job_id FROM recommended_jobs WHERE job_id = ?');
+  checkStmt.bind([jobId]);
+  const exists = checkStmt.step();
+  checkStmt.free();
+
+  if (exists) {
+    return false; // Already exists
+  }
+
+  // Insert new job
+  const insertStmt = db.prepare(`
+    INSERT INTO recommended_jobs (job_id, job_data, recommended_at)
+    VALUES (?, ?, datetime('now'))
+  `);
+  insertStmt.bind([jobId, JSON.stringify(jobData)]);
+  insertStmt.step();
+  insertStmt.free();
+
+  saveDatabase();
+  return true; // New insertion
+}
+
 
 // Initialize database on module load
 await initDatabase();

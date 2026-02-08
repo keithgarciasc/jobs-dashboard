@@ -1,0 +1,35 @@
+{
+  "local_charleston": [
+    {
+      "title": "Software Engineer",
+      "company": "Tech Company Charleston",
+      "location": "Charleston, SC",
+      "url": "https://example.com/jobs/software-engineer-chs-1",
+      "pay": "$80k-$120k",
+      "confidence": "95%",
+      "date_posted": "2024-02-01"
+    }
+  ],
+  "remote_other": [
+    {
+      "title": "Full Stack Developer",
+      "company": "Remote Tech Inc",
+      "location": "Remote",
+      "url": "https://example.com/jobs/fullstack-remote-1",
+      "pay": "$90k-$140k",
+      "confidence": "88%",
+      "date_posted": "2024-02-05"
+    }
+  ],
+  "side_gigs": [
+    {
+      "title": "Website Redesign Project",
+      "company": "Small Business",
+      "location": "Contract/Remote",
+      "url": "https://example.com/gigs/website-project-1",
+      "pay": "$2k-$5k",
+      "confidence": "72%",
+      "date_posted": "2024-02-03"
+    }
+  ]
+}

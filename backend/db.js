@@ -26,5 +26,6 @@ export const {
   markJobAsApplied,
   getRecommendedJobIds,
   getRecommendedJobs,
+  addRecommendedJob,
   default: db
 } = dbModule;

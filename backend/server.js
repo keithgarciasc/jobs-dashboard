@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { getAppliedJobIds, markJobAsApplied, getAppliedJobs, getRecommendedJobs } from './db.js';
+import { getAppliedJobIds, markJobAsApplied, getAppliedJobs, getRecommendedJobs, addRecommendedJob } from './db.js';
 
 // Load environment variables
 dotenv.config();
@@ -151,6 +151,62 @@ app.get('/api/recommended', (req, res) => {
   } catch (error) {
     console.error('Error fetching recommended jobs:', error);
     res.status(500).json({ error: 'Failed to load recommended jobs' });
+  }
+});
+
+/**
+ * POST /api/admin/recommend
+ * Add a job to the recommended_jobs table
+ * Body: { jobId: string, jobData: object } or { jobs: array }
+ *
+ * Single job:
+ * { "jobId": "https://...", "jobData": {...} }
+ *
+ * Multiple jobs:
+ * { "jobs": [{"jobId": "...", "jobData": {...}}, ...] }
+ */
+app.post('/api/admin/recommend', async (req, res) => {
+  try {
+    const { jobId, jobData, jobs } = req.body;
+
+    // Bulk import
+    if (jobs && Array.isArray(jobs)) {
+      let added = 0;
+      let skipped = 0;
+
+      for (const job of jobs) {
+        if (!job.jobId || !job.jobData) {
+          skipped++;
+          continue;
+        }
+        const wasNew = await addRecommendedJob(job.jobId, job.jobData);
+        if (wasNew) added++;
+        else skipped++;
+      }
+
+      return res.json({
+        success: true,
+        message: `Processed ${jobs.length} jobs: ${added} added, ${skipped} skipped`,
+        added,
+        skipped
+      });
+    }
+
+    // Single job
+    if (!jobId || !jobData) {
+      return res.status(400).json({ error: 'jobId and jobData are required' });
+    }
+
+    const wasNew = await addRecommendedJob(jobId, jobData);
+
+    res.json({
+      success: true,
+      message: wasNew ? 'Job added to recommended' : 'Job already exists',
+      wasNew
+    });
+  } catch (error) {
+    console.error('Error adding recommended job:', error);
+    res.status(500).json({ error: 'Failed to add job to recommended' });
   }
 });
 
